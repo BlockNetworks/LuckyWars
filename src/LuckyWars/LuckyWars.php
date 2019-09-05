@@ -161,7 +161,7 @@ class LuckyWars extends PluginBase implements Listener {
 									array_push($this->arenas,$args[1]);
 									$this->currentLevel = $args[1];
 									$this->mode = 1;
-									$player->sendMessage($this->prefix . "Toca los puntos del spawneo!");
+									$player->sendMessage($this->prefix . "Touch the spawn points");
 									$player->setGamemode(1);
                                                                         array_push($this->op, $player->getName());
 									$player->teleport($this->getServer()->getLevelByName($args[1])->getSafeSpawn(),0,0);
@@ -202,7 +202,7 @@ class LuckyWars extends PluginBase implements Listener {
                                         {
                                         $config->set($args[0] . "StartTime", 10);
                                         $config->save();
-                                        $player->sendMessage($this->prefix . "§eEmpezando en 10...");
+                                        $player->sendMessage($this->prefix . "§eStarting in 10...");
                                         }
                                         }
                                         else
@@ -213,7 +213,7 @@ class LuckyWars extends PluginBase implements Listener {
                                             {
                                             $config->set($level . "StartTime", 10);
                                             $config->save();
-                                            $player->sendMessage($this->prefix . "§eEmpezando en 10...");
+                                            $player->sendMessage($this->prefix . "§eStarting in 10...");
                                             }
                                         }
                                 }
@@ -235,7 +235,7 @@ class LuckyWars extends PluginBase implements Listener {
 				$this->refreshArenas();
 				$this->currentLevel = "";
 				$this->mode = 0;
-				$player->sendMessage($this->prefix . "Arena Registrada");
+				$player->sendMessage($this->prefix . "Registered arena");
                                 array_shift($this->op);
 			}
 			else
@@ -467,7 +467,7 @@ class GameSender extends PluginTask {
                                                                         }
                                                                         $config->set($arena . "PlayTime", 780);
                                                                         $config->set($arena . "StartTime", 30);
-                                                                        $config->set($arena . "inicio", 0);
+                                                                        $config->set($arena . "Start", 0);
 								}
                                                                 if(($aop>=2))
                                                                 {
@@ -497,7 +497,7 @@ class GameSender extends PluginTask {
 									foreach($playersArena as $pl)
 									{
                                                                                 $pl->sendMessage(TE::YELLOW.">".TE::AQUA."You are playing in LuckyWars");
-                                                                                $pl->sendMessage(TE::YELLOW.">".TE::AQUA."Gracias".TE::GREEN." for playing");
+                                                                                $pl->sendMessage(TE::YELLOW.">".TE::AQUA."Thank you".TE::GREEN." for playing");
 									}
 								}
 								if($time<300)
@@ -529,7 +529,7 @@ class GameSender extends PluginTask {
                                                                                         $pl->setHealth(20);
                                                                                         $pl->setNameTag($pl->getName());
                                                                                         $this->getResetmap()->reload($levelArena);
-                                                                                        $config->set($arena . "inicio", 0);
+                                                                                        $config->set($arena . "start", 0);
                                                                                         $config->save();
 										}
 										$time = 780;
