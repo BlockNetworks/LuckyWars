@@ -18,7 +18,7 @@ use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerQuitEvent;
-use georgianYT\LuckyWars\ResetMap;
+use LuckyWars\ResetMap;
 use pocketmine\level\sound\PopSound;
 use pocketmine\block\Air;
 use pocketmine\math\Vector3;
