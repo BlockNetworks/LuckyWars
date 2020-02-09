@@ -1,8 +1,8 @@
 name: LuckyWars
 version: 1.5.1
-load:
+load: STARTUP
 main: LuckyWars\LuckyWars
-api: 1.0.0, 2.0.0, 3.0.0, 4.0.0, 5.0.0
+api: 3.0.0, 4.0.0
 description: An advanced plugin for LuckyWars
 
 commands:
