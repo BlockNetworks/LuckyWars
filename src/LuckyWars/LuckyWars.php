@@ -26,7 +26,7 @@ use pocketmine\math\Vector3;
 
 class LuckyWars extends PluginBase implements Listener {
 	
-    public $prefix = TE::GRAY . "[" . TE::YELLOW . TE::RESET . "§eLucky" . TE::GREEN . "§bWars" . TE::RESET . TE::GRAY . "]";
+	public $prefix = TE::GRAY . "[" . TE::YELLOW . TE::RESET . "§eLucky" . TE::GREEN . "§bWars" . TE::RESET . TE::GRAY . "]";
 	
 	public $mode = 0;
 	
@@ -34,11 +34,11 @@ class LuckyWars extends PluginBase implements Listener {
 	
 	public $currentLevel = "";
 	
-    public $op = array();
+	public $op = array();
 	
 	public function onEnable(){
 		$this->getLogger()->info(TE::DARK_AQUA . "LuckyWars has been enabled");
-        $this->getServer()->getPluginManager()->registerEvents($this ,$this);
+		$this->getServer()->getPluginManager()->registerEvents($this ,$this);
 		@mkdir($this->getDataFolder());
 		$config = new Config($this->getDataFolder() . "/config.yml", Config::YAML);
 		
@@ -49,15 +49,15 @@ class LuckyWars extends PluginBase implements Listener {
 			$this->getServer()->loadLevel($lev);
 		}
 		
-        $items = array(array(258,0,1),array(260,0,5),array(261,0,1),array(262,0,6),array(264,0,1),array(265,0,1),array(268,0,1),array(271,0,1),array(272,0,1),array(275,0,1),array(283,0,1),array(286,0,1),array(297,0,3),array(298,0,1),array(299,0,1),array(300,0,1),array(301,0,1),array(302,0,1),array(303,0,1),array(304,0,1),array(305,0,1),array(306,0,1),array(307,0,1),array(308,0,1),array(309,0,1),array(314,0,1),array(315,0,1),array(316,0,1),array(317,0,1),array(320,0,4),array(280,0,1),array(364,0,4),array(366,0,5),array(391,0,5));
+		$items = array(array(258,0,1),array(260,0,5),array(261,0,1),array(262,0,6),array(264,0,1),array(265,0,1),array(268,0,1),array(271,0,1),array(272,0,1),array(275,0,1),array(283,0,1),array(286,0,1),array(297,0,3),array(298,0,1),array(299,0,1),array(300,0,1),array(301,0,1),array(302,0,1),array(303,0,1),array(304,0,1),array(305,0,1),array(306,0,1),array(307,0,1),array(308,0,1),array(309,0,1),array(314,0,1),array(315,0,1),array(316,0,1),array(317,0,1),array(320,0,4),array(280,0,1),array(364,0,4),array(366,0,5),array(391,0,5));
 		
 		if($config->get("luckyitems")==null){
 			$config->set("luckyitems",$items);
 		}
 		
 		$config->save();
-                $slots = new Config($this->getDataFolder() . "/slots.yml", Config::YAML);
-                $slots->save();
+		$slots = new Config($this->getDataFolder() . "/slots.yml", Config::YAML);
+		$slots->save();
 		$this->getServer()->getScheduler()->scheduleRepeatingTask(new GameSender($this), 20);
 		$this->getServer()->getScheduler()->scheduleRepeatingTask(new RefreshSigns($this), 20);
 	}
@@ -71,59 +71,59 @@ class LuckyWars extends PluginBase implements Listener {
 			$sofar = $config->get($level . "StartTime");
 			
 			if($sofar > 0){
-                $from = $event->getFrom();
-                $to = $event->getTo();
-                if($from->x !== $to->x or $from->z !== $to->z){
-                    $event->setCancelled();
-                }
+				$from = $event->getFrom();
+				$to = $event->getTo();
+				if($from->x !== $to->x or $from->z !== $to->z){
+					$event->setCancelled();
+				}
 			}
 		}
 	}
 	
 	public function onLog(PlayerLoginEvent $event){
 		$player = $event->getPlayer();
-        if(in_array($player->getLevel()->getFolderName(),$this->arenas)){
+		if(in_array($player->getLevel()->getFolderName(),$this->arenas)){
 			$player->getInventory()->clearAll();
 			$spawn = $this->getServer()->getDefaultLevel()->getSafeSpawn();
 			$this->getServer()->getDefaultLevel()->loadChunk($spawn->getFloorX(), $spawn->getFloorZ());
 			$player->teleport($spawn,0,0);
-        }
+		}
 	}
         
-    public function onQuit(PlayerQuitEvent $event){
-        pl = $event->getPlayer();
-        $level = $pl->getLevel()->getFolderName();
-        if(in_array($level,$this->arenas)){
-            $pl->removeAllEffects();
-            $pl->getInventory()->clearAll();
-            $slots = new Config($this->getDataFolder() . "/slots.yml", Config::YAML);
-            $pl->setNameTag($pl->getName());
-            for ($i = 1; $i <= 12; $i++) {
-                if($slots->get("slot".$i.$level)==$pl->getName()){
-                    $slots->set("slot".$i.$level, 0);
-                }
-            }
-            $slots->save();
-        }
-    }
+	public function onQuit(PlayerQuitEvent $event){
+		pl = $event->getPlayer();
+		$level = $pl->getLevel()->getFolderName();
+		if(in_array($level,$this->arenas)){
+			$pl->removeAllEffects();
+			$pl->getInventory()->clearAll();
+			$slots = new Config($this->getDataFolder() . "/slots.yml", Config::YAML);
+			$pl->setNameTag($pl->getName());
+			for ($i = 1; $i <= 12; $i++) {
+				if($slots->get("slot".$i.$level)==$pl->getName()){
+					$slots->set("slot".$i.$level, 0);
+				}
+			}
+			$slots->save();
+		}
+	}
 	
 	public function onBlockBreaks(BlockBreakEvent $event){
 		$player = $event->getPlayer();
 		$level = $player->getLevel()->getFolderName();
         $block = $event->getBlock();
 		if(in_array($level,$this->arenas)){
-            $config = new Config($this->getDataFolder() . "/config.yml", Config::YAML);
-            if($config->get($level . "PlayTime") != null){
-                if($config->get($level . "PlayTime") > 779){
-                    $event->setCancelled(true);
-                }
-            }
-            if($block->getId() == 19){
-                $k = array_rand($config->get("luckyitems"));
-                $v = $config->get("luckyitems")[$k];
-                $event->setDrops(array(Item::get(Item::AIR,0,1)));
-                $player->getLevel()->dropItem(new Vector3($block->getX(), $block->getY(), $block->getZ()), Item::get($v[0],$v[1],$v[2]));
-            }
+			$config = new Config($this->getDataFolder() . "/config.yml", Config::YAML);
+			if($config->get($level . "PlayTime") != null){
+				if($config->get($level . "PlayTime") > 779){
+					$event->setCancelled(true);
+				}
+			}
+			if($block->getId() == 19){
+				$k = array_rand($config->get("luckyitems"));
+				$v = $config->get("luckyitems")[$k];
+				$event->setDrops(array(Item::get(Item::AIR,0,1)));
+				$player->getLevel()->dropItem(new Vector3($block->getX(), $block->getY(), $block->getZ()), Item::get($v[0],$v[1],$v[2]));
+			}
 		}
 	}
 	
@@ -155,10 +155,10 @@ class LuckyWars extends PluginBase implements Listener {
 								$this->mode = 1;
 								$player->sendMessage($this->prefix . "Touch the spawn points");
 								$player->setGamemode(1);
-                                array_push($this->op, $player->getName());
+								array_push($this->op, $player->getName());
 								$player->teleport($this->getServer()->getLevelByName($args[1])->getSafeSpawn(),0,0);
-                                $name = $args[1];
-                                $this->zipper($player, $name);
+								$name = $args[1];
+								$this->zipper($player, $name);
 							} else {
 								$player->sendMessage($this->prefix . "ERROR missing world.");
 							}
@@ -170,8 +170,8 @@ class LuckyWars extends PluginBase implements Listener {
 					}
 				} else {
 					$player->sendMessage($this->prefix . "Commands LuckyWars");
-                    $player->sendMessage($this->prefix . "/lw create [world]: Create LuckyWars arena!");
-                    $player->sendMessage($this->prefix . "/lwstart: Start game");
+					$player->sendMessage($this->prefix . "/lw create [world]: Create LuckyWars arena!");
+					$player->sendMessage($this->prefix . "/lwstart: Start game");
 				}
 			}
 			return true;
@@ -203,7 +203,7 @@ class LuckyWars extends PluginBase implements Listener {
 			}
 			return true;
 		}
-    }
+	}
 	
 	public function onInteract(PlayerInteractEvent $event){
 		$player = $event->getPlayer();
@@ -223,34 +223,34 @@ class LuckyWars extends PluginBase implements Listener {
 				if($text[3] == $this->prefix){
 					if($text[0]==TE::AQUA . "[Unirse]"){
 						$config = new Config($this->getDataFolder() . "/config.yml", Config::YAML);
-                        $slots = new Config($this->getDataFolder() . "/slots.yml", Config::YAML);
-                        $namemap = str_replace("§f", "", $text[2]);
+						$slots = new Config($this->getDataFolder() . "/slots.yml", Config::YAML);
+						$namemap = str_replace("§f", "", $text[2]);
 						$level = $this->getServer()->getLevelByName($namemap);
-                        for ($i = 1; $i <= 12; $i++) {
-                            if($slots->get("slot".$i.$namemap)==null){
-                                $thespawn = $config->get($namemap . "Spawn".$i);
-                                $slots->set("slot".$i.$namemap, $player->getName());
-                                goto with;
-                            }
-                        }
-                        $player->sendMessage($this->prefix."No hay Slots");
-                        goto sinslots;
-                        with:
-                        $slots->save();
-                        $player->sendMessage($this->prefix . "§eYou have entered the game");
-                        foreach($level->getPlayers() as $playersinarena){
-                            $playersinarena->sendMessage($player->getNameTag() ." §eYou have entered the game");
-                        }
+						for ($i = 1; $i <= 12; $i++) {
+							if($slots->get("slot".$i.$namemap)==null){
+								$thespawn = $config->get($namemap . "Spawn".$i);
+								$slots->set("slot".$i.$namemap, $player->getName());
+								goto with;
+							}
+						}
+						$player->sendMessage($this->prefix."No hay Slots");
+						goto sinslots;
+						with:
+						$slots->save();
+						$player->sendMessage($this->prefix . "§eYou have entered the game");
+						foreach($level->getPlayers() as $playersinarena){
+							$playersinarena->sendMessage($player->getNameTag() ." §eYou have entered the game");
+						}
 						$spawn = new Position($thespawn[0]+0.5,$thespawn[1],$thespawn[2]+0.5,$level);
 						$level->loadChunk($spawn->getFloorX(), $spawn->getFloorZ());
 						$player->teleport($spawn,0,0);
 						$player->getInventory()->clearAll();
-                        $player->removeAllEffects();
-                        $player->setMaxHealth(20);
-                        $player->setHealth(20);
-                        $player->setFood(20);
-                        $player->setGamemode(0);
-                        sinslots:
+						$player->removeAllEffects();
+						$player->setMaxHealth(20);
+						$player->setHealth(20);
+						$player->setFood(20);
+						$player->setGamemode(0);
+						sinslots:
 					}else{
 						$player->sendMessage($this->prefix . "You can not get in");
 					}
@@ -267,7 +267,7 @@ class LuckyWars extends PluginBase implements Listener {
 			$config->set($this->currentLevel . "Spawn" . $this->mode, array($block->getX(),$block->getY()+1,$block->getZ()));
 			$player->sendMessage($this->prefix . "Spawn " . $this->mode . " has been registered!");
 			$config->set("arenas",$this->arenas);
-            $config->set($this->currentLevel . "inicio", 0);
+			$config->set($this->currentLevel . "inicio", 0);
 			$player->sendMessage($this->prefix . "Touch a sign to register the arena");
 			$spawn = $this->getServer()->getDefaultLevel()->getSafeSpawn();
 			$this->getServer()->getDefaultLevel()->loadChunk($spawn->getFloorX(), $spawn->getFloorZ());
@@ -286,16 +286,16 @@ class LuckyWars extends PluginBase implements Listener {
 		}
 		$config->save();
 	}
-        
-    public function zipper($player, $name){
-        $path = realpath($player->getServer()->getDataPath() . 'worlds/' . $name);
+	
+	public function zipper($player, $name){
+		$path = realpath($player->getServer()->getDataPath() . 'worlds/' . $name);
 		$zip = new \ZipArchive;
 		@mkdir($this->getDataFolder() . 'arenas/', 0755);
 		$zip->open($this->getDataFolder() . 'arenas/' . $name . '.zip', $zip::CREATE | $zip::OVERWRITE);
 		$files = new \RecursiveIteratorIterator(
 		new \RecursiveDirectoryIterator($path),
 		\RecursiveIteratorIterator::LEAVES_ONLY);
-        foreach ($files as $datos) {
+		foreach ($files as $datos) {
 			if (!$datos->isDir()) {
 				$relativePath = $name . '/' . substr($datos, strlen($path) + 1);
 				$zip->addFile($datos, $relativePath);
@@ -304,14 +304,14 @@ class LuckyWars extends PluginBase implements Listener {
 		$zip->close();
 		$player->getServer()->loadLevel($name);
 		unset($zip, $path, $files);
-    }
+	}
 }
 
 class RefreshSigns extends PluginTask {
     
 	public function __construct($plugin){
 		$this->plugin = $plugin;
-        $this->prefix = $this->plugin->prefix;
+		$this->prefix = $this->plugin->prefix;
 		parent::__construct($plugin);
 	}
 	
@@ -322,12 +322,12 @@ class RefreshSigns extends PluginTask {
 			if($t instanceof Sign) {	
 				$text = $t->getText();
 				if($text[3]==$this->prefix){
-                    $aop = 0;
-                    $namemap = str_replace("§f", "", $text[2]);
+					$aop = 0;
+					$namemap = str_replace("§f", "", $text[2]);
 					$play = $this->plugin->getServer()->getLevelByName($namemap)->getPlayers();
-                    foreach ($play as $pl){
-                        $aop=$aop+1;
-                    }
+					foreach ($play as $pl){
+						$aop=$aop+1;
+					}
 					$ingame = TE::AQUA . "[Unirse]";
 					$config = new Config($this->plugin->getDataFolder() . "/config.yml", Config::YAML);
 					if($config->get($namemap . "PlayTime")!=780){
@@ -349,9 +349,9 @@ class GameSender extends PluginTask {
 		parent::__construct($plugin);
 	}
         
-    public function getResetmap() {
+	public function getResetmap() {
 		Return new ResetMap($this);
-    }
+	}
   
 	public function onRun($tick){
 		$config = new Config($this->plugin->getDataFolder() . "/config.yml", Config::YAML);
@@ -371,11 +371,11 @@ class GameSender extends PluginTask {
 					if(count($playersArena)==0){
 						$config->set($arena . "PlayTime", 780);
 						$config->set($arena . "StartTime", 30);
-                        $config->set($arena . "inicio", 0);
+						$config->set($arena . "inicio", 0);
 					}else{
-                        if(count($playersArena)>=2){
-                            $config->set($arena . "inicio", 1);
-                            $config->save();
+						if(count($playersArena)>=2){
+							$config->set($arena . "inicio", 1);
+							$config->save();
 						}
 						
 						if($config->get($arena . "inicio")==1){
@@ -390,60 +390,60 @@ class GameSender extends PluginTask {
 									}
 								}
 								
-                                if($timeToStart==29){
-                                    $levelArena->setTime(7000);
-                                    $levelArena->stopTime();
-                                }
+								if($timeToStart==29){
+									$levelArena->setTime(7000);
+									$levelArena->stopTime();
+								}
 								
 								if($timeToStart<=0){
-                                    foreach($playersArena as $pl){
-                                        $pl->getLevel()->setBlock($pl->floor()->subtract(0, 1), new Air());
+									foreach($playersArena as $pl){
+										$pl->getLevel()->setBlock($pl->floor()->subtract(0, 1), new Air());
 									}
 								}
 								$config->set($arena . "StartTime", $timeToStart);
 							}else{
-                                $aop = count($playersArena);
+								$aop = count($playersArena);
 								
 								if($aop==1){
 									
 									foreach($playersArena as $pl){
-                                        $this->plugin->getServer()->broadcastMessage($this->prefix.$pl->getName().TE::GREEN." Won in the arena ".TE::AQUA.$arena);
-                                        $pl->getInventory()->clearAll();
-                                        $pl->removeAllEffects();
-                                        $pl->teleport($this->plugin->getServer()->getDefaultLevel()->getSafeSpawn(),0,0);
-                                        $pl->setHealth(20);
-                                        $pl->setFood(20);
-                                        $pl->setNameTag($pl->getName());
-                                        $this->getResetmap()->reload($levelArena);
-                                    }
-                                    $config->set($arena . "PlayTime", 780);
-                                    $config->set($arena . "StartTime", 30);
-                                    $config->set($arena . "Start", 0);
+										$this->plugin->getServer()->broadcastMessage($this->prefix.$pl->getName().TE::GREEN." Won in the arena ".TE::AQUA.$arena);
+										$pl->getInventory()->clearAll();
+										$pl->removeAllEffects();
+										$pl->teleport($this->plugin->getServer()->getDefaultLevel()->getSafeSpawn(),0,0);
+										$pl->setHealth(20);
+										$pl->setFood(20);
+										$pl->setNameTag($pl->getName());
+										$this->getResetmap()->reload($levelArena);
+									}
+									$config->set($arena . "PlayTime", 780);
+									$config->set($arena . "StartTime", 30);
+									$config->set($arena . "Start", 0);
 								}
-                                if(($aop>=2)){
-                                    foreach($playersArena as $pl){
-                                        $pl->sendPopup(TE::BOLD.TE::GOLD.$aop." ".TE::AQUA."Players remaining".TE::RESET);
-                                    }
-                                }
+								if(($aop>=2)){
+									foreach($playersArena as $pl){
+										$pl->sendPopup(TE::BOLD.TE::GOLD.$aop." ".TE::AQUA."Players remaining".TE::RESET);
+									}
+								}
 								$time--;
 								if($time == 779){
-                                    $slots = new Config($this->plugin->getDataFolder() . "/slots.yml", Config::YAML);
-                                    for ($i = 1; $i <= 12; $i++) {
-                                        $slots->set("slot".$i.$arena, 0);
-                                    }
-                                    $slots->save();
+									$slots = new Config($this->plugin->getDataFolder() . "/slots.yml", Config::YAML);
+									for ($i = 1; $i <= 12; $i++) {
+										$slots->set("slot".$i.$arena, 0);
+									}
+									$slots->save();
 									foreach($playersArena as $pl){
 										$pl->sendMessage(TE::YELLOW.">--------------------------------");
-                                        $pl->sendMessage(TE::YELLOW.">".TE::RED."Attention: ".TE::GREEN."The game has started");
-                                        $pl->sendMessage(TE::YELLOW.">".TE::WHITE."Map: " .TE::AQUA. $arena);
-                                        $pl->sendMessage(TE::YELLOW.">--------------------------------");
+										$pl->sendMessage(TE::YELLOW.">".TE::RED."Attention: ".TE::GREEN."The game has started");
+										$pl->sendMessage(TE::YELLOW.">".TE::WHITE."Map: " .TE::AQUA. $arena);
+										$pl->sendMessage(TE::YELLOW.">--------------------------------");
 									}
 								}
 								
-                                if($time == 550){
+								if($time == 550){
 									foreach($playersArena as $pl){
-                                        $pl->sendMessage(TE::YELLOW.">".TE::AQUA."You are playing in LuckyWars");
-                                        $pl->sendMessage(TE::YELLOW.">".TE::AQUA."Thank you".TE::GREEN." for playing");
+										$pl->sendMessage(TE::YELLOW.">".TE::AQUA."You are playing in LuckyWars");
+										$pl->sendMessage(TE::YELLOW.">".TE::AQUA."Thank you".TE::GREEN." for playing");
 									}
 								}
 								if($time<300){
@@ -461,17 +461,17 @@ class GameSender extends PluginTask {
 										}
 									}
 									if($time <= 0){
-                                        $this->plugin->getServer()->broadcastMessage($this->prefix .TE::GREEN."There are no winners in the arena ".TE::AQUA.$arena);
+										$this->plugin->getServer()->broadcastMessage($this->prefix .TE::GREEN."There are no winners in the arena ".TE::AQUA.$arena);
 										foreach($playersArena as $pl){
 											$pl->teleport($this->plugin->getServer()->getDefaultLevel()->getSafeSpawn(),0,0);
 											$pl->getInventory()->clearAll();
-                                            $pl->removeAllEffects();
-                                            $pl->setFood(20);
-                                            $pl->setHealth(20);
-                                            $pl->setNameTag($pl->getName());
-                                            $this->getResetmap()->reload($levelArena);
-                                            $config->set($arena . "start", 0);
-                                            $config->save();
+											$pl->removeAllEffects();
+											$pl->setFood(20);
+											$pl->setHealth(20);
+											$pl->setNameTag($pl->getName());
+											$this->getResetmap()->reload($levelArena);
+											$config->set($arena . "start", 0);
+											$config->save();
 										}
 										$time = 780;
 									}
@@ -479,12 +479,11 @@ class GameSender extends PluginTask {
 								$config->set($arena . "PlayTime", $time);
 							}
 						}else{
-                            foreach($playersArena as $pl){
-                                $pl->sendPopup(TE::DARK_AQUA . "Players Remaining" .TE::RESET);
-                            }
-                            $config->set($arena . "PlayTime", 780);
-                            $config->set($arena . "StartTime", 30);
-                                                    
+							foreach($playersArena as $pl){
+								$pl->sendPopup(TE::DARK_AQUA . "Players Remaining" .TE::RESET);
+							}
+							$config->set($arena . "PlayTime", 780);
+							$config->set($arena . "StartTime", 30);
 						}
 					}
 				}
