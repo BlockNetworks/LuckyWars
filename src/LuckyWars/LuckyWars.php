@@ -25,51 +25,86 @@ use pocketmine\block\Air;
 use pocketmine\math\Vector3;
 
 class LuckyWars extends PluginBase implements Listener {
-	
+
 	public $prefix = TE::GRAY . "[" . TE::YELLOW . TE::RESET . "§eLucky" . TE::GREEN . "§bWars" . TE::RESET . TE::GRAY . "]";
-	
+
 	public $mode = 0;
-	
+
 	public $arenas = array();
-	
+
 	public $currentLevel = "";
-	
+
 	public $op = array();
-	
+
 	public function onEnable(){
 		$this->getLogger()->info(TE::DARK_AQUA . "LuckyWars has been enabled");
 		$this->getServer()->getPluginManager()->registerEvents($this ,$this);
 		@mkdir($this->getDataFolder());
 		$config = new Config($this->getDataFolder() . "/config.yml", Config::YAML);
-		
+
 		if($config->get("arenas")!=null){
 			$this->arenas = $config->get("arenas");
 		}
 		foreach($this->arenas as $lev){
 			$this->getServer()->loadLevel($lev);
 		}
-		
-		$items = array(array(258,0,1),array(260,0,5),array(261,0,1),array(262,0,6),array(264,0,1),array(265,0,1),array(268,0,1),array(271,0,1),array(272,0,1),array(275,0,1),array(283,0,1),array(286,0,1),array(297,0,3),array(298,0,1),array(299,0,1),array(300,0,1),array(301,0,1),array(302,0,1),array(303,0,1),array(304,0,1),array(305,0,1),array(306,0,1),array(307,0,1),array(308,0,1),array(309,0,1),array(314,0,1),array(315,0,1),array(316,0,1),array(317,0,1),array(320,0,4),array(280,0,1),array(364,0,4),array(366,0,5),array(391,0,5));
-		
+
+		$items = array(
+			array(258, 0, 1),
+			array(260, 0, 5),
+			array(261, 0, 1),
+			array(262, 0, 6),
+			array(264 ,0, 1),
+			array(265, 0, 1),
+			array(268, 0, 1),
+			array(271, 0, 1),
+			array(272, 0, 1),
+			array(275, 0, 1),
+			array(283, 0, 1),
+			array(286, 0, 1),
+			array(297, 0, 3),
+			array(298, 0, 1),
+			array(299, 0, 1),
+			array(300, 0, 1),
+			array(301, 0, 1),
+			array(302, 0, 1),
+			array(303, 0, 1),
+			array(304, 0, 1),
+			array(305, 0, 1),
+			array(306, 0, 1),
+			array(307, 0, 1),
+			array(308, 0, 1),
+			array(309, 0, 1),
+			array(314, 0, 1),
+			array(315, 0, 1),
+			array(316, 0, 1),
+			array(317, 0, 1),
+			array(320, 0, 4),
+			array(280, 0, 1),
+			array(364, 0, 4),
+			array(366, 0, 5),
+			array(391, 0, 5),
+		);
+
 		if($config->get("luckyitems")==null){
 			$config->set("luckyitems",$items);
 		}
-		
+
 		$config->save();
 		$slots = new Config($this->getDataFolder() . "/slots.yml", Config::YAML);
 		$slots->save();
 		$this->getServer()->getScheduler()->scheduleRepeatingTask(new GameSender($this), 20);
 		$this->getServer()->getScheduler()->scheduleRepeatingTask(new RefreshSigns($this), 20);
 	}
-	
+
 	public function onMove(PlayerMoveEvent $event){
 		$player = $event->getPlayer();
 		$level = $player->getLevel()->getFolderName();
-		
+
 		if(in_array($level,$this->arenas)){
 			$config = new Config($this->getDataFolder() . "/config.yml", Config::YAML);
 			$sofar = $config->get($level . "StartTime");
-			
+
 			if($sofar > 0){
 				$from = $event->getFrom();
 				$to = $event->getTo();
@@ -79,7 +114,7 @@ class LuckyWars extends PluginBase implements Listener {
 			}
 		}
 	}
-	
+
 	public function onLog(PlayerLoginEvent $event){
 		$player = $event->getPlayer();
 		if(in_array($player->getLevel()->getFolderName(),$this->arenas)){
