@@ -2,18 +2,18 @@
 
 namespace LuckyWars;
 
-use LuckyWars\LuckyWars\GameSender;
+use LuckyWars\GameSender;
 
-class ResetMap implements Task{
-	
-	public function __construct(GameSender $plugin){
+class ResetMap implements Task {
+
+	public function __construct(GameSender $plugin) {
 		$this->plugin = $plugin;
 	}
-	
-	public function reload($lev){
+
+	public function reload($lev) {
 		$name = $lev->getFolderName();
 		
-		if ($this->plugin->getOwner()->getServer()->isLevelLoaded($name)){
+		if ($this->plugin->getOwner()->getServer()->isLevelLoaded($name)) {
 			$this->plugin->getOwner()->getServer()->unloadLevel($this->plugin->getOwner()->getServer()->getLevelByName($name));
 		}
 		
@@ -25,4 +25,5 @@ class ResetMap implements Task{
 		$this->plugin->getOwner()->getServer()->loadLevel($name);
 		return true;
 	}
+
 }
