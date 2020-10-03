@@ -125,7 +125,7 @@ class LuckyWars extends PluginBase implements Listener {
 	}
 
 	public function onQuit(PlayerQuitEvent $event) {
-		pl = $event->getPlayer();
+		$pl = $event->getPlayer();
 		$level = $pl->getLevel()->getFolderName();
 		if (in_array($level,$this->arenas)) {
 			$pl->removeAllEffects();
