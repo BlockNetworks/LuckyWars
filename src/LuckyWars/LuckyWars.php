@@ -19,6 +19,8 @@ use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerQuitEvent;
+use LuckyWars\GameSender;
+use LuckyWars\RefreshSigns;
 use LuckyWars\ResetMap;
 use pocketmine\level\sound\PopSound;
 use pocketmine\block\Air;
