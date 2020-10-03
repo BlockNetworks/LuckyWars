@@ -2,6 +2,7 @@
 
 namespace LuckyWars;
 
+use pocketmine\scheduler\Task;
 use LuckyWars\GameSender;
 
 class ResetMap implements Task {
