@@ -2,14 +2,14 @@
 
 namespace LuckyWars;
 
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 use pocketmine\utils\TextFormat;
 use pocketmine\utils\Config;
 use pocketmine\tile\Sign;
 use LuckyWars\ResetMap;
 use pocketmine\math\Vector3;
 
-class RefreshSigns extends PluginTask {
+class RefreshSigns extends Task {
    
 	public function __construct($plugin) {
 		$this->plugin = $plugin;
