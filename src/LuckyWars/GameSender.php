@@ -14,7 +14,7 @@ class GameSender extends PluginTask {
 
 	public function __construct($plugin) {
 		$this->plugin = $plugin;
-        $this->prefix = $this->plugin->prefix;
+		$this->prefix = $this->plugin->prefix;
 		parent::__construct($plugin);
 	}
 
