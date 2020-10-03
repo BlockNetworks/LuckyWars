@@ -2,7 +2,7 @@
 
 namespace LuckyWars;
 
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 use pocketmine\utils\TextFormat;
 use pocketmine\utils\Config;
 use pocketmine\level\Level;
@@ -10,7 +10,7 @@ use LuckyWars\ResetMap;
 use pocketmine\level\sound\PopSound;
 use pocketmine\block\Air;
 
-class GameSender extends PluginTask {
+class GameSender extends Task {
 
 	public function __construct($plugin) {
 		$this->plugin = $plugin;
