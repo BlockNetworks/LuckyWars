@@ -28,14 +28,13 @@ use pocketmine\math\Vector3;
 
 class LuckyWars extends PluginBase implements Listener {
 
-	public $prefix = TextFormat::GRAY . "[" . TextFormat::YELLOW . TextFormat::RESET . "§eLucky" . TextFormat::GREEN . "§bWars" . TextFormat::RESET . TextFormat::GRAY . "]";
+	public $prefix = TextFormat::GRAY . "[" . TextFormat::YELLOW . "Lucky" . TextFormat::AQUA . "Wars" . extFormat::GRAY . "]";
 	public $mode = 0;
 	public $arenas = [];
 	public $currentLevel = "";
 	public $op = [];
 
 	public function onEnable() : void {
-		$this->getLogger()->info(TextFormat::DARK_AQUA . "LuckyWars has been enabled");
 		$this->getServer()->getPluginManager()->registerEvents($this, $this);
 		@mkdir($this->getDataFolder());
 		$config = new Config($this->getDataFolder() . "/config.yml", Config::YAML);
