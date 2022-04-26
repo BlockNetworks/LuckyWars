@@ -28,7 +28,8 @@ use pocketmine\math\Vector3;
 
 class LuckyWars extends PluginBase implements Listener {
 
-	public $prefix = TextFormat::GRAY . "[" . TextFormat::YELLOW . "Lucky" . TextFormat::AQUA . "Wars" . extFormat::GRAY . "]";
+	public $prefix = TextFormat::GRAY . "[" . TextFormat::YELLOW . "Lucky" . TextFormat::AQUA . "Wars" . T
+extFormat::GRAY . "]";
 	public $mode = 0;
 	public $arenas = [];
 	public $currentLevel = "";
